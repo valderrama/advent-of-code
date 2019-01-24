@@ -44,11 +44,11 @@ func main() {
 	// Format: #ID @ COL,ROW: WIDTHxHEIGHT
 	// Example: #1338 @ 983,969: 11x25
 	re := regexp.MustCompile("#([0-9]+) @ ([0-9]+),([0-9]+): ([0-9]+)x([0-9]+)")
-	potentialValidClaims := map[SquareInch]bool{}
+	validClaims := map[SquareInch]bool{}
 
 	file.ProcessEachLine("input.txt", func(line string) bool {
 		claim := parseClaim(re, line)
-		potentialValidClaims[claim.ID] = true
+		validClaims[claim.ID] = true
 		for col := claim.Col; col < claim.Col+claim.Width; col++ {
 			for row := claim.Row; row < claim.Row+claim.Height; row++ {
 				currSquareInch := &fabric[col][row]
@@ -56,10 +56,10 @@ func main() {
 				case Free:
 					*currSquareInch = SquareInch(claim.ID)
 				case Conflict:
-					delete(potentialValidClaims, claim.ID)
+					delete(validClaims, claim.ID)
 				default:
-					delete(potentialValidClaims, claim.ID)
-					delete(potentialValidClaims, *currSquareInch)
+					delete(validClaims, claim.ID)
+					delete(validClaims, *currSquareInch)
 					*currSquareInch = Conflict
 				}
 			}
@@ -67,7 +67,7 @@ func main() {
 		return true
 	})
 
-	for key := range potentialValidClaims {
+	for key := range validClaims {
 		fmt.Println(key)
 	}
 }
