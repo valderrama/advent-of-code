@@ -9,17 +9,19 @@ import (
 func main() {
 	answer := ""
 	substrMap := map[string]bool{}
-	file.ProcessEachLine("input.txt", func(line string) bool {
-		for index := range line {
-			candidate := line[:index] + "_" + line[index+1:]
-			if substrMap[candidate] {
-				answer = line[:index] + line[index+1:]
-				return false
+	file.ProcessEachLine(
+		"input.txt",
+		func(line string) bool {
+			for index := range line {
+				candidate := line[:index] + "_" + line[index+1:]
+				if substrMap[candidate] {
+					answer = line[:index] + line[index+1:]
+					return false
+				}
+				substrMap[candidate] = true
 			}
-			substrMap[candidate] = true
-		}
-		return true
-	})
+			return true
+		})
 
 	fmt.Println(answer)
 }

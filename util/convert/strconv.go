@@ -1,6 +1,7 @@
 package convert
 
 import (
+	"log"
 	"strconv"
 )
 
@@ -8,7 +9,7 @@ import (
 func MustAtoi(s string) int {
 	result, err := strconv.Atoi(s)
 	if err != nil {
-		panic(err)
+		log.Fatal("strconv.Atoi failed: ", err)
 	}
 	return result
 }
@@ -17,7 +18,7 @@ func MustAtoi(s string) int {
 func MustParseUint(s string, bitSize int) uint {
 	result, err := strconv.ParseUint(s, 10, bitSize)
 	if err != nil {
-		panic(err)
+		log.Fatal("strconv.ParseUint failed: ", err)
 	}
 	return uint(result)
 }
